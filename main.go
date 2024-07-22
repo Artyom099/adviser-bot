@@ -1,9 +1,18 @@
 package main
 
-func main() {
-	// token = flags.Get(token)
+import (
+	"flag"
+	"log"
+)
 
-	// tgClient = telegram.New(token)
+const (
+	tgBotHost = "api.telegram.org"
+)
+
+func main() {
+	token := mustToken()
+
+	tgClient := telegram.New(token, tgBotHost)
 
 	// отправляет запрос в тг, чтоб получать новые события
 	// fetcher = fetcher.New(tgClient)
@@ -14,4 +23,11 @@ func main() {
 	// consumer.Start(fetcher, processor)
 }
 
-func mustToken(s string) string {}
+func mustToken() string {
+	token := flag.String("bot-token", "", "telegram bot access token")
+	flag.Parse()
+	if *token == "" {
+		//panic("missing bot access token")
+		log.Fatal("missing bot access token")
+	}
+}
